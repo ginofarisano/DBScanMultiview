@@ -6,6 +6,10 @@
 #include <boost/foreach.hpp>
 #include "distance.h"
 
+/**
+ * ciao sono io (ciro)
+ */
+
 namespace Clustering{
 
 	// a single point is made up of vector of doubles
