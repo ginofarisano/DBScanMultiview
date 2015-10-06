@@ -7,7 +7,7 @@
 #include "distance.h"
 
 /**
- * ciao sono io (ciro)
+ * ciao sono io (gino)
  */
 
 namespace Clustering{
