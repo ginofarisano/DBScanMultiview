@@ -20,7 +20,7 @@ namespace Clustering
 	}
 
 	/** Added **/
-										   //1
+										   //2
 	void myPoint(Points & ps, unsigned int dims,
 										//9
 						unsigned int num_points){
@@ -34,13 +34,30 @@ namespace Clustering
 
 
 				Point p(dims);
+
+				/** Added my first feature**/
+
 				for (unsigned int i = 0; i < dims; i++)
 				{
-					if((j%3)==0){
-						newCluster++;
-						p(i)=newCluster+(0.1*(j%3));
-					} else
-						p(i)=newCluster+(0.1*(j%3));
+					//first feature
+					if(i==0){
+						if((j%3)==0){
+							newCluster++;
+							p(i)=newCluster+(0.1*(j%3));
+						} else
+							p(i)=newCluster+(0.1*(j%3));
+					}
+					//end first feature
+
+					//second feature
+					if(i==0){
+						if((j%3)==0){
+							newCluster++;
+							p(i)=newCluster+(0.1*(j%3));
+						} else
+							p(i)=newCluster+(0.1*(j%3));
+					}
+					//end secind feature
 
 
 					std::cout << p(i) << ' ';
