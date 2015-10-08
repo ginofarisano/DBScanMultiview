@@ -3,6 +3,7 @@
 
 namespace Clustering
 {
+	/*
 	void DBSCAN::run_cluster() 
 	{
 		
@@ -76,5 +77,5 @@ namespace Clustering
 			} // if (!visited
 		} // for
 	}
-
+*/
 };

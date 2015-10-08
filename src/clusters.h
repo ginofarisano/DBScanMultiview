@@ -12,85 +12,134 @@
 
 namespace Clustering{
 
-	// a single point is made up of vector of doubles
-	typedef boost::numeric::ublas::vector<double> Point;
-	typedef std::vector<Point> Points;
+// a single point is made up of vector of doubles
+typedef boost::numeric::ublas::vector<double> Point;
+typedef std::vector<Point> Points;
 
-	/** added **/
+/** added **/
 
-	//struttura per mantenere più viste
-	typedef std::vector<Points> MultidimensionalPoint;
+//struttura per mantenere più viste
+typedef std::vector<Points> MultidimensionalPoint;
 
-	/** added **/
+/** added **/
 
-	typedef unsigned int ClusterId;
-	typedef unsigned int PointId;	
+typedef unsigned int ClusterId;
+typedef unsigned int PointId;
 
-	// a cluster is a vector of pointid
-	typedef std::vector<PointId> Cluster;
-	// a set of Neighbors is a vector of pointid
-	typedef std::vector<PointId> Neighbors;
+// a cluster is a vector of pointid
+typedef std::vector<PointId> Cluster;
+// a set of Neighbors is a vector of pointid
+typedef std::vector<PointId> Neighbors;
 
 
-	void randomInit	(Points & ps, unsigned int dims = 5, 
-						unsigned int num_points = 10);
+void randomInit	(Points & ps, unsigned int dims = 5,
+		unsigned int num_points = 10);
 
-	void myPoint(Points & ps, unsigned int dims = 5,
-							unsigned int num_points = 10);
+void myPoint(Points & ps, unsigned int dims = 5,
+		unsigned int num_points = 10);
 
-	void myPoint2(Points & ps, unsigned int dims = 5,
-								unsigned int num_points = 10);
+void myPoint2(Points & ps, unsigned int dims = 5,
+		unsigned int num_points = 10);
 
-	class Clusters
+class Clusters
+{
+public:
+	Clusters (MultidimensionalPoint & ps) : _ps(ps)
+{
+		for(int i=0;i<ps.size();i++){
+
+			_pointId_to_clusterId x;
+			x.resize(_ps[i].size(), 0);
+			_pointId_to_clusterId_matrix.push_back(x);
+
+		}
+
+
+};
+
+	// assign each point to a new cluster
+	void uniformPartition();
+
+	// compute similarity
+	template <typename Distance_type>
+	void computeSimilarity(Distance_type & d)
 	{
-	public:
-		Clusters (Points & ps) : _ps(ps) 
-		{
-			_pointId_to_clusterId.resize(_ps.size(), 0);
-		};
 
-		// assign each point to a new cluster
-		void uniformPartition();
+		unsigned int size = _ps.size();
 
-		// compute similarity
-		template <typename Distance_type>
-		void computeSimilarity(Distance_type & d)
-		{
-			unsigned int size = _ps.size();
-			_sim.resize(size, size, false);
-			for (unsigned int i=0; i < size; i++)
-			{
-				for (unsigned int j=i+1; j < size; j++)
+
+
+		for(int i=0;i<size;i++){
+
+			_sim x;
+			x.resize(_ps[i].size(),_ps[i].size(),false);
+			_sim_matrix.push_back(x);
+		}
+
+
+		std::cout << "Il numero è " << size;
+
+		for(int z=0;z<size;z++){
+
+			_sim x = _sim_matrix[z];
+
+			Clustering::Points  p1 = _ps[z];
+
+			std::cout << "Il numero in z è " << size << std::endl;
+
+			unsigned int size2 = p1.size();
+
+			std::cout << "Il numero in iEj è " << size2 << std::endl;
+
+			for (unsigned int i=0; i < size2; i++){
+
+				Clustering::Point p21 = p1[i];
+
+				for (unsigned int j=i+1; j < size2; j++)
 				{
-					_sim(j, i) = _sim(i, j) = d.similarity(_ps[i], _ps[j]);
-	//				std::cout << "(" << i << ", " << j << ")=" << _sim(i, j) << " ";
+					Clustering::Point p22 = p1[j];
+					double a = p21(0);
+					double b = p22(0);
+
+					std::cout << "Il numero matriciale è " << a << "e " << b << std::endl;
+
+
+					x(j, i) = x(i, j) + d.similarity(p21, p22);
 				}
 				std::cout << std::endl;
 			}
-		};
-	
-		//
-		// findNeighbors(PointId pid, double threshold)
-		//
-		// this can be implemented with reduced complexity by using R+trees
-		//
-		Neighbors findNeighbors(PointId pid, double threshold);
-	
-	protected:
-		// the collection of points we are working on
-		Points& _ps;
-		
-		// mapping point_id -> clusterId
-		std::vector<ClusterId> _pointId_to_clusterId;
+		}
 
-		// the collection of clusters
-		std::vector<Cluster> _clusters;
-
-		// simarity_matrix
-		boost::numeric::ublas::matrix<double> _sim;
-
-		friend	
-			std::ostream& operator << (std::ostream& o, const Clusters& c);
 	};
+
+	//
+	// findNeighbors(PointId pid, double threshold)
+	//
+	// this can be implemented with reduced complexity by using R+trees
+	//
+	Neighbors findNeighbors(PointId pid, double threshold);
+
+protected:
+	// the collections of points we are working on
+	MultidimensionalPoint& _ps;
+
+	// mapping point_id -> clusterId
+	typedef std::vector<ClusterId> _pointId_to_clusterId;
+
+	std::vector<_pointId_to_clusterId> _pointId_to_clusterId_matrix;
+
+
+	// the collection of clusters
+	std::vector<Cluster> _clusters;
+
+	// simarity_matrix
+	typedef boost::numeric::ublas::matrix<double> _sim;
+
+	std::vector<_sim> _sim_matrix;
+
+
+	friend
+	std::ostream& operator << (std::ostream& o, const Clusters& c);
+};
 
 }

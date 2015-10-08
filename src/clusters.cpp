@@ -19,53 +19,61 @@ void randomInit	(Points & ps, unsigned int dims,
 	}
 }
 
-/** Added **/
-//2
 void myPoint(Points & ps, unsigned int dims,
 		//9
 		unsigned int num_points){
 
-	int newCluster=0;
+	//(1 1.1  1.2)  (2    2.1  2.2)  (3     3.1   3.2)
 
-	std::cout << "Created point" << std::endl;
+	std::cout << "Created point 1" << std::endl;
 
-	for (unsigned int j = 0; j < num_points; j++)
-	{
+	Point p1(1);
+	p1(0)=1;
+	std::cout << p1(0) << ' ';
+	ps.push_back(p1);
 
+	Point p2(1);
+	p2(0)=1.1;
+	std::cout << p2(0) << ' ';
+	ps.push_back(p2);
 
-		Point p(dims);
+	Point p3(1);
+	p3(0)=1.2;
+	std::cout << p3(0) << ' ';
+	ps.push_back(p3);
 
-		/** Added my first feature**/
+	Point p4(1);
+	p4(0)=2;
+	std::cout << p4(0) << ' ';
+	ps.push_back(p4);
 
-		for (unsigned int i = 0; i < dims; i++)
-		{
-			//first feature
-			if(i==0){
-				if((j%3)==0){
-					newCluster++;
-					p(i)=newCluster+(0.1*(j%3));
-				} else
-					p(i)=newCluster+(0.1*(j%3));
-			}
-			//end first feature
+	Point p5(1);
+	p5(0)=2.1;
+	std::cout << p5(0) << ' ';
+	ps.push_back(p5);
 
-			//second feature
-			if(i==0){
-				if((j%3)==0){
-					newCluster++;
-					p(i)=newCluster+(0.1*(j%3));
-				} else
-					p(i)=newCluster+(0.1*(j%3));
-			}
-			//end secind feature
+	Point p6(1);
+	p6(0)=2.2;
+	std::cout << p6(0) << ' ';
+	ps.push_back(p6);
 
+	Point p7(1);
+	p7(0)=3;
+	std::cout << p7(0) << ' ';
+	ps.push_back(p7);
 
-			std::cout << p(i) << ' ';
-		}
+	Point p8(1);
+	p8(0)=3.1;
+	std::cout << p8(0) << ' ';
+	ps.push_back(p8);
 
-		ps.push_back(p);
-		//		std::cout << std::endl;
-	}
+	Point p9(1);
+	p9(0)=3.2;
+	std::cout << p9(0) << ' ';
+	ps.push_back(p9);
+
+	std::cout << std::endl;
+
 }
 
 
@@ -122,28 +130,30 @@ void myPoint2(Points & ps, unsigned int dims,
 	std::cout << p9(0) << ' ';
 	ps.push_back(p9);
 
-
+	std::cout << std::endl;
 
 }
 
 /** Added **/
 
 // assign each point to a new cluster
-void Clusters::uniformPartition()
-{
-	PointId pid = 0;
-	ClusterId cid = 0;
-	BOOST_FOREACH(Point p, _ps)
-	{
-		// create a new cluster for this current point
-		Cluster c;
-		c.push_back(pid++);
-		_clusters.push_back(c);
-		_pointId_to_clusterId.push_back(cid++);
-	}
-}
+//void Clusters::uniformPartition()
+//{
+//	PointId pid = 0;
+//	ClusterId cid = 0;
+//	BOOST_FOREACH(Point p, _ps)
+//	{
+//		// create a new cluster for this current point
+//		Cluster c;
+//		c.push_back(pid++);
+//		_clusters.push_back(c);
+//		_pointId_to_clusterId.push_back(cid++);
+//	}
+//}
 
-// findNeighbors(PointId pid, double threshold)
+ //findNeighbors(PointId pid, double threshold);
+
+/*
 Neighbors Clusters::findNeighbors(PointId pid, double threshold)
 {
 	Neighbors ne;
@@ -165,7 +175,7 @@ Neighbors Clusters::findNeighbors(PointId pid, double threshold)
 	}
 	return ne;
 };
-
+*/
 
 // single point output
 std::ostream& operator<<(std::ostream& o, const Point& p)
@@ -201,10 +211,10 @@ std::ostream& operator<<(std::ostream& o, const Clusters& cs)
 	{
 		o << "c(" << cid++ << ")=";
 
-		BOOST_FOREACH(PointId pid, c)
-		{
-			o << cs._ps[pid];
-		}
+//		BOOST_FOREACH(PointId pid, c)
+//		{
+//			o << cs._ps[pid];
+//		}
 		o << std::endl;
 	}
 	return o;

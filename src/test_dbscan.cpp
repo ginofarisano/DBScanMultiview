@@ -98,11 +98,23 @@ int main(){
 
 
 
-	/** Added **/
+
+
+
+
+
+
+
+	std::vector<double> _eps_matrix;
+
+	//aggiungo i due eps
+	_eps_matrix.push_back(0.11);
+	_eps_matrix.push_back(0.5);
+
 
 
 	// init: sim threshold, minPts
-	Clustering::DBSCAN clusters(multidimensionalPoint[1], 0.11, 2);
+	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_matrix, 2);
 
 	// uniform distribution dataset
 	//	clusters.uniformPartition();          
@@ -112,13 +124,15 @@ int main(){
 	clusters.computeSimilarity(d);     
 
 	// run clustering
-	clusters.run_cluster();
+	//clusters.run_cluster();
 
-	std::cout << clusters;
+	//std::cout << clusters;
 
 	std::cout << "Fine" << std::endl;
 
 	int test;
 	std::cin >> test;
+
+
 
 }
