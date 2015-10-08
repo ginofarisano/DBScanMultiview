@@ -38,6 +38,9 @@ namespace Clustering{
 	void myPoint(Points & ps, unsigned int dims = 5,
 							unsigned int num_points = 10);
 
+	void myPoint2(Points & ps, unsigned int dims = 5,
+								unsigned int num_points = 10);
+
 	class Clusters
 	{
 	public:

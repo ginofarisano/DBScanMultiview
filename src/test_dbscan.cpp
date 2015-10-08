@@ -67,7 +67,9 @@ int main(){
 
 	std::cout << "Inizio" << std::endl;
 
-	Clustering::Points ps;
+
+
+	Clustering::MultidimensionalPoint multidimensionalPoint;
 
 	/** Commented **/
 
@@ -81,14 +83,26 @@ int main(){
 	// prova punti monodimensionali: 9 punti
 	//due caratteristiche
 
+	int numbersOfFeatures=2;
 
-	Clustering::myPoint(ps, 2, 9);
+	for(int i=0;i<numbersOfFeatures;i++){
+
+		Clustering::Points ps;
+
+		multidimensionalPoint.push_back(ps);
+	}
+
+	Clustering::myPoint(multidimensionalPoint[0]);
+
+	Clustering::myPoint2(multidimensionalPoint[1]);
+
+
 
 	/** Added **/
 
 
 	// init: sim threshold, minPts
-	Clustering::DBSCAN clusters(ps, 0.11, 2);
+	Clustering::DBSCAN clusters(multidimensionalPoint[1], 0.11, 2);
 
 	// uniform distribution dataset
 	//	clusters.uniformPartition();          
