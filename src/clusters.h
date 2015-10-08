@@ -16,6 +16,13 @@ namespace Clustering{
 	typedef boost::numeric::ublas::vector<double> Point;
 	typedef std::vector<Point> Points;
 
+	/** added **/
+
+	//struttura per mantenere più viste
+	typedef std::vector<Points> MultidimensionalPoint;
+
+	/** added **/
+
 	typedef unsigned int ClusterId;
 	typedef unsigned int PointId;	
 

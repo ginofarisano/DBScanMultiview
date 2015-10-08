@@ -80,6 +80,8 @@ int main(){
 
 	// prova punti monodimensionali: 9 punti
 	//due caratteristiche
+
+
 	Clustering::myPoint(ps, 2, 9);
 
 	/** Added **/
