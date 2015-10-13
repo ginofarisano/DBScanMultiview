@@ -119,12 +119,19 @@ int main(){
 	// uniform distribution dataset
 	//	clusters.uniformPartition();          
 
+
+
 	// build similarity  matrix
 	Distance<Difference<Clustering::Point> > d;
+
+
+
 	clusters.computeSimilarity(d);     
 
+
+
 	// run clustering
-	//clusters.run_cluster();
+	clusters.run_cluster();
 
 	//std::cout << clusters;
 

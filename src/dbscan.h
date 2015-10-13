@@ -31,7 +31,7 @@ namespace Clustering{
 		// 
 		// The clustering algo
 		//
-		//void run_cluster() ;
+		void run_cluster() ;
 
 	private:
 
