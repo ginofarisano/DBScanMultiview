@@ -32,6 +32,8 @@ typedef std::vector<PointId> Cluster;
 typedef std::vector<PointId> Neighbors;
 
 
+
+
 void randomInit	(Points & ps, unsigned int dims = 5,
 		unsigned int num_points = 10);
 
@@ -46,13 +48,7 @@ class Clusters
 public:
 	Clusters (MultidimensionalPoint & ps) : _ps(ps)
 {
-		for(int i=0;i<ps.size();i++){
-
-			_pointId_to_clusterId x;
-			x.resize(_ps[i].size(), 0);
-			_pointId_to_clusterId_matrix.push_back(x);
-
-		}
+		_pointId_to_clusterId.resize(_ps[0].size(), 0);
 
 
 };
@@ -68,46 +64,52 @@ public:
 		unsigned int size = _ps.size();
 
 
-
 		for(int i=0;i<size;i++){
-
 			_sim x;
 			x.resize(_ps[i].size(),_ps[i].size(),false);
 			_sim_matrix.push_back(x);
 		}
 
 
-		std::cout << "Il numero è " << size;
-
 		for(int z=0;z<size;z++){
 
-			_sim x = _sim_matrix[z];
 
 			Clustering::Points  p1 = _ps[z];
 
-			std::cout << "Il numero in z è " << size << std::endl;
-
 			unsigned int size2 = p1.size();
 
-			std::cout << "Il numero in iEj è " << size2 << std::endl;
 
 			for (unsigned int i=0; i < size2; i++){
 
+				//ogni punto può avere più dimensioi
 				Clustering::Point p21 = p1[i];
 
 				for (unsigned int j=i+1; j < size2; j++)
 				{
+
+
 					Clustering::Point p22 = p1[j];
-					double a = p21(0);
-					double b = p22(0);
-
-					std::cout << "Il numero matriciale è " << a << "e " << b << std::endl;
 
 
-					x(j, i) = x(i, j) + d.similarity(p21, p22);
+					//std::cout << "Il numero matriciale è " << a << "e " << b << std::endl;
+
+
+					//lo sto facendo per tutte le dimensioni perchè gli passo il punto che
+					//è multidimensionale
+					_sim_matrix[z](j, i) = _sim_matrix[z](i, j) = d.similarity(p21, p22);
+
+
+					std:: cout << "|" <<  j << "," << i << ": " << _sim_matrix[z](j, i) << "| ";
+
+
 				}
+
+
 				std::cout << std::endl;
 			}
+
+
+
 		}
 
 	};
@@ -117,16 +119,17 @@ public:
 	//
 	// this can be implemented with reduced complexity by using R+trees
 	//
-	Neighbors findNeighbors(PointId pid, double threshold);
+	Neighbors findNeighbors(PointId pid, double threshold,int view, std::vector<bool> _visited);
 
 protected:
 	// the collections of points we are working on
 	MultidimensionalPoint& _ps;
 
 	// mapping point_id -> clusterId
-	typedef std::vector<ClusterId> _pointId_to_clusterId;
+	std::vector<ClusterId> _pointId_to_clusterId;
 
-	std::vector<_pointId_to_clusterId> _pointId_to_clusterId_matrix;
+
+
 
 
 	// the collection of clusters

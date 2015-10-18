@@ -68,24 +68,12 @@ namespace Metrics{
 
 			double getSimilarity(const VEC_T v1, const VEC_T v2)
 			{
-			//	std::cout << "dot=" << prec_inner_prod(v1, v2) << " norm_2=" << norm_2(v1) << "norm2=" << norm_2(v2) << std::endl;
-
-				/** Commented **/
-
-				//return prec_inner_prod(v1, v2) / (norm_2(v1) * norm_2(v2));
-
-				/** Commented **/
-
-				/** Added **/
-				std::cout << "Vettore1 è: "<< v1[0] << ". Vettore2 è: " << v2[0];
+				//ATTENZIONE: QUESTA E' UNA SINGOLA DIMENSIONE->MODIFICARE
 
 				double difference = std::abs(v2[0]-v1[0]);
 
-				std::cout << "La differenza è: "<< difference << std::endl;
-
 				return difference;
 
-				/** Added **/
 			};
 		};
 
