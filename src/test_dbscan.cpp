@@ -8,56 +8,186 @@ int main(){
 	 * The union-method assigns objects to the
 	   same cluster, if they are similar in at least one of the representations
 
-	   Caratteristica1:
+	   minPts=2
 
-	   1  2    3      4    5    6       7     8     9
+	    0  1    2      3    4    5      6     7     8
 
-	   (1 1.1  1.2)  (2    2.1  2.2)  (3     3.1   3.2)       eps=0.11
+	   (1 1.1  1.2)  (2    2.1  2.2)   (3     3.1   3.2)       eps=0.11
 
 	   Caratteristica2:
 
-	   (5 5.2  5.4   5.6  6)  (10   10.4  10.8  11)    eps=0.5
+	   (5 5.2  5.4   5.6   6)   (10    10.4  10.8  11)    eps=0.5
 
 	   ______
 
-	   1 2 3 4 5
+	   C1
 
-	   Primo union core prima caratteristica: 1->1.1 (0->1)
-	   Primo union core seconda caratteristica: 5->(5.2, 5.4) (0->(1,2))
+	   Prima vista: 0->1
+	   Seconda vista:0->1,2
+	   minPts=2, da espandere |1|,|2|
+	   C1={0}
 
-	   Da espandere 1.1, 5.2, 5.4
-	                 1    1    2 (minPts=2)
+	   Prima vista: 1->2
+	   Seconda vista: 1->2,3
+	   minPts=2, da espandere |2|,3
+	   C1={0,1}
 
-	   Secondo union core prima caratteristica: 1.1->1.2 (1->2)
-	   Secondo union core seconda caratteristica: 5.2->5.6 (1->3), 5.4->5.6? (1->2)
+	   Prima vista: /
+	   Seconda vista: 2-> 3,4
+	   minPts=2, da aspandere 3,4
+	   C1={0,1,2}
 
-		(1->2 e 1->3) quindi minPts=2
-	   Da espandere 5.6 (gli altri non possono più essere espansi)
+	   Prima vista: 3->4
+	   Seconda vista: 3->4
+	   minPts=1
+	   C1={0,1,2,3}
 
-	   Secondo union core prima caratteristica: (il 5.6 si è tirato anche il 2) 2->2.1
-	   Secondo union core seconda caratteristica: 5.6->6
+	   C2
+	   Prima vista: 4->5
+	   Seconda vista: /
+	   minPts=1
+       RUMORE
 
-	  minPts=1 qundi 5.6 e 6 li devo liberare
-	   NON CI STA PIU' NIENTE DA ESPANDERE. QUALI SONO ADESSO I PUNTI NOO VISITATI?
+       C2
+       Prima vista: /
+       Seconda vista: 5->6
+       minPts=1
+       RUMORE
+
+       C2
+       Prima vista: 6->7
+       Seconda vista: 6->7
+       minPts=1
+       RUMORE
+
+       C2
+       Prima vista: 7->8
+       Seconda vista: 7->8
+       minPts=1
+       RUMORE
+
+
+       /////////////////////////////////////
+       ////////////////////////////////////
+
+       minPts=1
+
+       C1
+
+	   Prima vista: 0->1
+	   Seconda vista:0->1,2
+	   minPts=2, da espandere 1,2
+	   C1={0}
+
+	   Prima vista: 1->2
+	   Seconda vista: 1->2,3
+	   minPts=2, da espandere 2,3
+	   C1={0,1}
+
+	   Prima vista: /
+	   Seconda vista: 2-> 3,4
+	   minPts=2, da aspandere 3,4
+	   C1={0,1,2}
+
+	   Prima vista: 3->4
+	   Seconda vista: 3->4
+	   minPts=1, da aspandere 4
+	   C1={0,1,2,3}
+
+	   Prima vista: 4->5
+	   Seconda vista: /
+	   minPts=1, da espandere 5
+	   C1={0,1,2,3,4}
+
+       Prima vista: /
+       Seconda vista: 5->6
+       minPts=1, da espandere 6
+       C1={0,1,2,3,4,5}
+
+       Prima vista: 6->7
+       Seconda vista: 6->7
+       minPts=1, da espandere 7
+       C1={0,1,2,3,4,5,6}
+
+       Prima vista: 7->8
+       Seconda vista: 7->8
+       minPts=1, da espandere 8
+       C1={0,1,2,3,4,5,6,7}
+
+       Prima vista:
+       Seconda vista:
+       minPts=0
+       C1={0,1,2,3,4,5,6,7,8}
+       N.B 8 è in espandiCluster->cmq è aggiunto
 
 
 
-	   {2    2.1  2.2 3     3.1   3.2 10   10.4  10.8  11}
+	  Intersezione
 
-	   7 8 9 6
 
-	   Secondo union core prima caratteristica: 3->3.1
-	   Secondo union core seconda caratteristica: 11->10.8
+		minPts=1
 
-	   Da espandere 3.1, 10.8
+	    0  1    2      3    4    5      6     7     8
 
-	   Secondo union core prima caratteristica: 3.1->3.2
-	   Secondo union core seconda caratteristica: 10.8->10.4
+	   (1 1.1  1.2)  (2    2.1  2.2)   (3     3.1   3.2)       eps=0.11
 
-	   Da espandere 3.2, 10.4
+	   Caratteristica2:
 
-	   Secondo union core prima caratteristica: 3.2->//
-	   Secondo union core seconda caratteristica: 10.4->10
+	   (5 5.2  5.4   5.6   6)   (10    10.4  10.8  11)    eps=0.5
+
+
+	   C1
+
+	   Prima vista: 0->1
+	   Seconda vista:0->1,2
+	   minPts=1, da espandere |1|,(2 tolto perchè fa parte solo della vista)
+	   C1={0}
+
+	   Prima vista: 1->2
+	   Seconda vista:1->2,3
+	   minPts=1, da espandere 2,(3 tolto perchè fa parte solo della vista)
+	   C1={0,1}
+
+	   Prima vista:
+	   Seconda vista:2->3
+	   minPtd=0
+	   C1={0,1,2}
+	   Da espandere (3 tolto perchè fa parte solo della vista, N.B 2 non è  rumore perchè
+	   siamo in espandiCluster->ergo è aggiunto cmq)
+
+	   C2
+
+	   Prima vista: 3->4
+	   Seconda vista:3->4
+	   minPts=1, da espandere 4
+	   C2={3}
+
+	   Prima vista: 4->5
+	   Seconda vista:/
+	   minPts=0,
+	   C2={3,4}
+
+	   C3
+
+	   Prima vista:
+	   Seconda vista:5->6
+	   minPts=0
+	   RUMORE
+
+	   C3
+
+	   Prima vista: 6->7
+	   Seconda vista:6->7
+	   minPts=1, da espandere 7
+	   C2={6}
+
+	   Prima vista: 7->8
+	   Seconda vista:7->8
+	   minPts=1, da espandere 7 (che si tira dentro pure 8)
+	   C2={6,7,8}
+
+
+
 
 
 
@@ -106,7 +236,7 @@ int main(){
 
 
 	// init: sim threshold, minPts
-	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_matrix, 2);
+	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_matrix, 1);
 
 	// uniform distribution dataset
 	//	clusters.uniformPartition();          
@@ -129,7 +259,7 @@ int main(){
 
 	//std::cout << clusters;
 
-	std::cout << "Fine" << std::endl;
+	std::cout << "\nFine" << std::endl;
 
 	//int test;
 	//std::cin >> test;

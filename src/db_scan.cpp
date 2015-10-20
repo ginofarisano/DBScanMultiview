@@ -6,7 +6,7 @@ using namespace std;
 
 namespace Clustering{
 
-ClusterId cid = 1;
+ClusterId cid = 0;
 
 void DBSCAN::run_cluster(bool UnionOrIntersection){
 
@@ -66,17 +66,25 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 		//nell'intersezione un punto potrebbe essere locale ma non globale
 		Neighbors global_neighbors;
 
-		if(!UnionOrIntersection){
-			neighbors_size=map_view.size();
+		int sizet=0;
 
+		if(UnionOrIntersection){
+			neighbors_size=map_view.size();
 		} else {
 			for (map <PointId, int>::const_iterator i = map_view.begin(); i != map_view.end(); ++i){
+
+				sizet=map_view.size();
+
+
+
 				if((i->second)==size_v){
 					neighbors_size++;
 				} else {
 
 					std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
 					map_view.erase(i);
+					if(map_view.size()==0)
+							break;
 					//CHE FINE NE FACCIO FARE A STO PUNTO?
 				}
 
@@ -85,6 +93,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 		}
 
 		//**// UNIONE O INTERSEZIONE FINE
+		sizet=map_view.size();
 
 		std::cout << "Point i=" << pid << ". Numero di vicini " << neighbors_size << std::endl;
 
@@ -92,13 +101,14 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 		if (neighbors_size < _minPts)
 		{
 			_noise[pid] = true;
+			continue;
 		}
 		else
 		{
 			std::cout << "Point i=" << pid << " can be expanded " << std::endl;// = true;
 
 			// Add p to current cluster
-
+			cid++;
 			Cluster c;              // a new cluster
 			c.push_back(pid);   	// assign pid to cluster
 			_pointId_to_clusterId[pid]=cid;
@@ -150,23 +160,33 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 				//è esattamente il numero delle viste
 				int neighbors_size2=0;
 
+				int sizet=0;
 
-				if(!UnionOrIntersection){
+				if(UnionOrIntersection){
 					neighbors_size2=map_view2.size();
 
 				} else {
 					for (map <PointId, int>::const_iterator i = map_view2.begin(); i != map_view2.end(); ++i){
+
+
+
 						if((i->second)==size_v){
 							neighbors_size2++;
 						} else {
 
 							std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
 							map_view2.erase(i);
+
+							if(map_view2.size()==0)
+								break;
+
 						}
 
 					}
 
 				}
+
+				sizet=map_view2.size();
 
 				if(neighbors_size2 >= _minPts){
 
@@ -202,12 +222,10 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 
 	}
 
-	cid++;
-
 }
 
 void DBSCAN::print_cluster(){
-	for(int i=0;i<cid;i++)
+	for(int i=1;i<=cid;i++)
 	{
 		std::cout << std::endl << "Cluster " << i << ":";
 		for(int j=0;j<_pointId_to_clusterId.size();j++){
