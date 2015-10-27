@@ -1,5 +1,9 @@
 #include "clusters.h"
 #include <boost/foreach.hpp>
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
 
 namespace Clustering
 {
@@ -32,10 +36,60 @@ namespace Clustering
 
 
 	std::cout << "Created point 1" << std::endl;
+	string line;
+	  ifstream myfile("/home/ciro/Scrivania/dbscan_mv/dbscan_mv/kmeans_miRNA_centers.txt");
+	  if (myfile.is_open())
+	  {
+
+
+		  	  string sLine;
+		  	  int number_patients;
+		      getline(myfile, sLine);
+		      cout << "number of patients" << endl;
+		      istringstream iss(sLine);
+		      vector<string> patiences;
+		      copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(patiences));
+		      number_patients =  patiences.size();
+		      string s2;
+		      string variabile;
+		      ofstream output;
+		      output.open("/home/ciro/Scrivania/dbscan_mv/dbscan_mv/output.txt");
+		      int dimensione = 201;
+		      float value;
+		      float matrix[number_patients][dimensione];
+		      Point p(dimensione);
+		      for(int i = 0; i < number_patients; i++){
+		    	  for(int j = 0; j < dimensione; j++ ){
+		    		  myfile >> variabile;
+		    		  value = atof(variabile.c_str());
+		    		  //prova commit
+		    		  //test test s<fdaklf
+		    		  //cout << variabile << endl;
+
+		    		  p(j) = value;
+		    		  output << p(j) << ' ';
+
+
+		    	  }
+		    	  ps.push_back(p);
+
+		    	  cout << "*************************"+i << endl;
+		      }
 
 
 
-	Point p1(1);
+	    /*while ( getline (myfile,line) )
+	    {
+	      cout << line << '\n';
+	    }*/
+	    myfile.close();
+	  }
+
+	  else cout << "Unable to open file";
+
+
+
+	/*Point p1(1);
 
 	p1(0)=1;
 
@@ -121,7 +175,7 @@ namespace Clustering
 
 	std::cout << p9(0) << ' ';
 
-	ps.push_back(p9);
+	ps.push_back(p9);*/
 
 
 
@@ -148,10 +202,56 @@ namespace Clustering
 
 
 	std::cout << "Created point 2" << std::endl;
+		string line;
+		  ifstream myfile("/home/ciro/Scrivania/dbscan_mv/dbscan_mv/kmeans_miRNASeq_centers");
+		  if (myfile.is_open())
+		  {
+
+
+			  	  string sLine;
+			  	  int number_patients;
+			      getline(myfile, sLine);
+			      cout << "number of patients" << endl;
+			      istringstream iss(sLine);
+			      vector<string> patiences;
+			      copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(patiences));
+			      number_patients =  patiences.size();
+			      string s2;
+			      string variabile;
+			      ofstream output;
+			      output.open("/home/ciro/Scrivania/dbscan_mv/dbscan_mv/output.txt");
+			      double value;
+			      for(int i = 0; i < number_patients; i++){
+
+			    	  for(int j = 0; j < 21; j++ ){
+			    		  myfile >> variabile;
+			    		  value = atof(variabile.c_str());
+			    		  //cout << variabile << endl;
+			    		  Point p(1);
+			    		  p(0) = value;
+			    		  output << p(0) << ' ';
+			    		  ps.push_back(p);
+
+			    	  }
+
+
+			    	  cout << "*************************"+i << endl;
+			      }
 
 
 
-	Point p1(1);
+		    /*while ( getline (myfile,line) )
+		    {
+		      cout << line << '\n';
+		    }*/
+		    myfile.close();
+		  }
+
+		  else cout << "Unable to open file";
+
+
+
+	/*Point p1(1);
 
 	p1(0)=5;
 
@@ -241,7 +341,7 @@ namespace Clustering
 
 
 
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
 
 
