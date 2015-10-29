@@ -225,6 +225,7 @@ int main(){
 
 	Clustering::myPoint(multidimensionalPoint[0]);
 
+
 	Clustering::myPoint2(multidimensionalPoint[1]);
 
 
@@ -263,6 +264,7 @@ int main(){
 
 	//int test;
 	//std::cin >> test;
+
 
 
 
