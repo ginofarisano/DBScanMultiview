@@ -8,16 +8,29 @@ namespace Clustering{
 
 ClusterId cid = 0;
 
-void DBSCAN::run_cluster(bool UnionOrIntersection){
+void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 
 	// foreach pid...ho messo _ps[0] perchè il numero di individui
 	// è lo stesso per ogni vista
 
-	//numero di individui
-	int size=_ps[0].size();
-	//numero di viste
-	int size_v=_ps.size();
+	int size;
+	int size_v;
+
+	if(_ps.size()>0){
+		//numero di individui
+		size=_ps[0].size();
+		//numero di viste
+		size_v=_ps.size();
+	} else{
+		//numero di individui
+		size=dimension;
+		//numero di viste
+		size_v=views;
+	}
+
+
+
 
 	for (PointId pid = 0; pid < size; pid++){
 
@@ -38,7 +51,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 		for(int i=0;i<size_v;i++){
 
 			// ottiene i vicini per ogni vista
-			neighbors_array[i] = findNeighbors(pid, _eps_matrix[i],i,_visited);
+			neighbors_array[i] = findNeighbors(pid, _eps_vector[i],i,_visited);
 
 			int neighbords_size=neighbors_array[i].size();
 
@@ -53,6 +66,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 			}
 
 		}
+
 
 		//**// PER OGNI VISTA FINE
 
@@ -71,27 +85,26 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 		if(UnionOrIntersection){
 			neighbors_size=map_view.size();
 		} else {
-			for (map <PointId, int>::const_iterator i = map_view.begin(); i != map_view.end(); ++i){
 
-				sizet=map_view.size();
+			std::map<PointId, int>::iterator i = map_view.begin();
 
-
-
-				if((i->second)==size_v){
+			while (i != map_view.end()) {
+				cout << "La taglia è " << map_view.size() << endl;
+				if ((i->second)==size_v) {
 					neighbors_size++;
+					++i;
 				} else {
-
 					std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
-					map_view.erase(i);
-					if(map_view.size()==0)
-							break;
-					//CHE FINE NE FACCIO FARE A STO PUNTO?
-				}
+					std::map<PointId, int>::iterator toErase = i;
+					++i;
+					map_view.erase(toErase);
 
+				}
 			}
 
 		}
 
+		cout << "La taglia è " << map_view.size() << endl;
 		//**// UNIONE O INTERSEZIONE FINE
 		sizet=map_view.size();
 
@@ -140,7 +153,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 
 					// ottiene i vicino per ogni vista
 
-					neighbors_array2[i] = findNeighbors(nPid, _eps_matrix[i],i,_visited);
+					neighbors_array2[i] = findNeighbors(nPid, _eps_vector[i],i,_visited);
 
 					int neighbords_size2=neighbors_array2[i].size();
 
@@ -166,23 +179,21 @@ void DBSCAN::run_cluster(bool UnionOrIntersection){
 					neighbors_size2=map_view2.size();
 
 				} else {
-					for (map <PointId, int>::const_iterator i = map_view2.begin(); i != map_view2.end(); ++i){
 
+					std::map<PointId, int>::iterator i = map_view2.begin();
 
-
-						if((i->second)==size_v){
+					while (i != map_view2.end()) {
+						if ((i->second)==size_v) {
 							neighbors_size2++;
+							++i;
 						} else {
-
 							std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
-							map_view2.erase(i);
-
-							if(map_view2.size()==0)
-								break;
-
+							std::map<PointId, int>::iterator toErase = i;
+							++i;
+							map_view2.erase(toErase);
 						}
-
 					}
+
 
 				}
 

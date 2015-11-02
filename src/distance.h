@@ -68,7 +68,7 @@ namespace Metrics{
 
 			double getSimilarity(const VEC_T v1, const VEC_T v2)
 			{
-				//ATTENZIONE: QUESTA E' UNA SINGOLA DIMENSIONE->MODIFICARE
+				//WARNING: THIS IS ONLY FOR ONE DIMENSIONS (MODIFY IT)
 
 				double difference = std::abs(v2[0]-v1[0]);
 

@@ -196,23 +196,18 @@ int main(){
 	using namespace Metrics;
 
 
-	std::cout << "Inizio" << std::endl;
+	std::cout << "Start" << std::endl;
 
-
-
+	//fill this structure only if you have not a correlation matrix file
 	Clustering::MultidimensionalPoint multidimensionalPoint;
 
-	/** Commented **/
+	/*
 
-	// random init points dataset (dims, points)
-	//Clustering::randomInit(ps, 10, 100);
 
-	/** Commented **/
+	//use this structure only if you have not a correlation matrix file
+	//numbersOfFeatures is the number of view
 
-	/** Added **/
 
-	// prova punti monodimensionali: 9 punti
-	//due caratteristiche
 
 	int numbersOfFeatures=2;
 
@@ -223,48 +218,69 @@ int main(){
 		multidimensionalPoint.push_back(ps);
 	}
 
+	//read function like this for read file with the value
+	//after call clusters.computeSimilarity(d) where d is
+	//yours similarity function
 	Clustering::myPoint(multidimensionalPoint[0]);
-
-
 	Clustering::myPoint2(multidimensionalPoint[1]);
 
+	// write your distance if you have not a correlation matrix file
+	// the Difference distance only works with monodimensional point (modify it)
 
-	std::vector<double> _eps_matrix;
+	std::vector<double> _eps_vector;
 
-	//aggiungo i due eps
-	_eps_matrix.push_back(0.11);
-	_eps_matrix.push_back(0.5);
+	_eps_vector.push_back(0.11);
+	_eps_vector.push_back(0.5);
 
+	//is empty if yuo have not a sim matrix
+	vector<string> _sim_filename;
 
-	// init: sim threshold, minPts
-	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_matrix, 1);
+	//the 3 value is minPts
+	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_vector, 1,_sim_filename);
 
-	// uniform distribution dataset
-	//	clusters.uniformPartition();          
-
-
-
-	// build similarity  matrix
 	Distance<Difference<Clustering::Point> > d;
 
+	clusters.computeSimilarity(d);
+
+	clusters.run_cluster(0);
+
+	clusters.print_cluster();
+
+	std::cout << "\nFine" << std::endl;
+
+	*/
 
 
-	clusters.computeSimilarity(d);     
+	//add eps for every view
+	std::vector<double> _eps_vector;
+
+	_eps_vector.push_back(0.94);
+	_eps_vector.push_back(0.94);
+
+	//initialize this structure with the names
+	vector<string> _sim_filename;
+
+	_sim_filename.push_back("correlation1.csv");
+	_sim_filename.push_back("correlation2.csv");
 
 
+	//the 3 value is minPts
+	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_vector, 1,_sim_filename);
 
-	// run clustering
-	clusters.run_cluster();
+	clusters.readSimilarity(_sim_filename,clusters.returnDimension());
+
+	// run clustering (1 union, 0 intersection)
+	clusters.run_cluster(1,_sim_filename.size(),clusters.returnDimension());
 
 	clusters.print_cluster();
 
 	//std::cout << clusters;
 
+
 	std::cout << "\nFine" << std::endl;
 
 	//int test;
 	//std::cin >> test;
-
 
 
 

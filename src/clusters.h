@@ -3,12 +3,14 @@
 #include <iostream>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
+#include <fstream>
 #include "distance.h"
 
-/**
- * ciao sono io (gino)
- */
+
+using namespace std;
+
 
 namespace Clustering{
 
@@ -18,7 +20,7 @@ typedef std::vector<Point> Points;
 
 /** added **/
 
-//struttura per mantenere più viste
+//structure for more view
 typedef std::vector<Points> MultidimensionalPoint;
 
 /** added **/
@@ -30,9 +32,6 @@ typedef unsigned int PointId;
 typedef std::vector<PointId> Cluster;
 // a set of Neighbors is a vector of pointid
 typedef std::vector<PointId> Neighbors;
-
-
-
 
 void randomInit	(Points & ps, unsigned int dims = 5,
 		unsigned int num_points = 10);
@@ -48,7 +47,9 @@ class Clusters
 public:
 	Clusters (MultidimensionalPoint & ps) : _ps(ps)
 {
-		_pointId_to_clusterId.resize(_ps[0].size(), 0);
+		if(ps.size()>0){
+			_pointId_to_clusterId.resize(_ps[0].size(), 0);
+		}
 
 
 };
@@ -81,7 +82,7 @@ public:
 
 			for (unsigned int i=0; i < size2; i++){
 
-				//ogni punto può avere più dimensioi
+				//every point has more dimensions
 				Clustering::Point p21 = p1[i];
 
 				for (unsigned int j=i+1; j < size2; j++)
@@ -90,14 +91,7 @@ public:
 
 					Clustering::Point p22 = p1[j];
 
-
-					//std::cout << "Il numero matriciale è " << a << "e " << b << std::endl;
-
-
-					//lo sto facendo per tutte le dimensioni perchè gli passo il punto che
-					//è multidimensionale
 					_sim_matrix[z](j, i) = _sim_matrix[z](i, j) = d.similarity(p21, p22);
-
 
 					std:: cout << "|" <<  j << "," << i << ": " << _sim_matrix[z](j, i) << "| ";
 
@@ -114,6 +108,83 @@ public:
 
 	};
 
+	int readSimilarity(vector<string> _sim_filename, int dimension)
+	{
+
+		bool firstRow=1;
+		bool firstColumn=1;
+
+		int row=0;
+		int column=0;
+
+		for(int i=0;i<_sim_filename.size();i++){
+			_sim x;
+			x.resize(dimension,dimension,false);
+			_sim_matrix.push_back(x);
+		}
+
+		_pointId_to_clusterId.resize(dimension, 0);
+
+
+		for(int fileNumber=0;fileNumber<_sim_filename.size();fileNumber++){
+
+			row=0;
+			column=0;
+
+			firstRow=1;
+			firstColumn=1;
+
+			ifstream read (_sim_filename.at(fileNumber));
+
+			string line;
+			if(read.is_open())
+
+
+				while(std::getline(read,line))
+				{
+
+					if(firstRow){
+						firstRow = 0;
+						continue;
+					}
+
+
+					stringstream  lineStream(line);
+					string cell;
+
+					while(getline(lineStream,cell,','))
+					{
+
+						if(firstColumn){
+							firstColumn = 0;
+							continue;
+						}
+						cout << "Index " << row << ":" << column << " File: "  << fileNumber << endl;
+						//cout << "Valore " << cell << endl;
+						_sim_matrix[fileNumber](row, column) = stod (cell);
+						cout.precision(15);
+
+						cout << "Read value " << cell << endl;
+
+						column++;
+
+
+					}
+
+					column = 0;
+					firstColumn = 1;
+					row++;
+
+				}
+
+			read.close();
+
+		}
+
+
+
+	};
+
 	//
 	// findNeighbors(PointId pid, double threshold)
 	//
@@ -127,9 +198,6 @@ protected:
 
 	// mapping point_id -> clusterId
 	std::vector<ClusterId> _pointId_to_clusterId;
-
-
-
 
 
 	// the collection of clusters
