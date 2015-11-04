@@ -2,6 +2,9 @@
 #include "distance.h"
 #include <iostream>
 
+void withOutSimFile();
+void withSimFile();
+
 int main(){
 
 	/**
@@ -192,21 +195,30 @@ int main(){
 
 
 	 */
+	bool run = 0;
+
+	if(run)
+		//i have not a sim file
+		withOutSimFile();
+	else
+		//i have a sim file
+		withSimFile();
+
+
+
+}
+
+void withOutSimFile(){
 
 	using namespace Metrics;
 
+	//use this structure only if you have not a correlation matrix file
+	//numbersOfFeatures is the number of view
 
 	std::cout << "Start" << std::endl;
 
 	//fill this structure only if you have not a correlation matrix file
 	Clustering::MultidimensionalPoint multidimensionalPoint;
-
-	/*
-
-
-	//use this structure only if you have not a correlation matrix file
-	//numbersOfFeatures is the number of view
-
 
 
 	int numbersOfFeatures=2;
@@ -247,21 +259,26 @@ int main(){
 	clusters.print_cluster();
 
 	std::cout << "\nFine" << std::endl;
+}
 
-	*/
+void withSimFile(){
 
+	std::cout << "Start" << std::endl;
+
+	//fill this structure only if you have not a correlation matrix file
+	Clustering::MultidimensionalPoint multidimensionalPoint;
 
 	//add eps for every view
 	std::vector<double> _eps_vector;
 
-	_eps_vector.push_back(0.94);
-	_eps_vector.push_back(0.94);
+	_eps_vector.push_back(0.11);
+	_eps_vector.push_back(0.5);
 
 	//initialize this structure with the names
 	vector<string> _sim_filename;
 
-	_sim_filename.push_back("correlation1.csv");
-	_sim_filename.push_back("correlation2.csv");
+	_sim_filename.push_back("UNO.csv");
+	_sim_filename.push_back("DUE.csv");
 
 
 	//the 3 value is minPts
@@ -270,7 +287,7 @@ int main(){
 	clusters.readSimilarity(_sim_filename,clusters.returnDimension());
 
 	// run clustering (1 union, 0 intersection)
-	clusters.run_cluster(1,_sim_filename.size(),clusters.returnDimension());
+	clusters.run_cluster(0,_sim_filename.size(),clusters.returnDimension());
 
 	clusters.print_cluster();
 
@@ -278,10 +295,4 @@ int main(){
 
 
 	std::cout << "\nFine" << std::endl;
-
-	//int test;
-	//std::cin >> test;
-
-
-
 }

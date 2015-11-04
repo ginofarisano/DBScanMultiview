@@ -245,7 +245,7 @@ Neighbors Clusters::findNeighbors(PointId pid, double threshold,int view, std::v
 	{
 
 		//ho calcolato sono una triangolare
-		if 	((pid != j ) &&  (sim(pid, j)) > threshold && !_visited[j] )
+		if 	((pid != j ) &&  (sim(pid, j)) < threshold && !_visited[j] )
 		{
 			std::cout << "Vista numero " << view << ". La similarità tra " << pid << " e " << j << " è " << (sim(pid, j)) << std::endl;
 			ne.push_back(j);

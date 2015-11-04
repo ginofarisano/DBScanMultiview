@@ -148,7 +148,6 @@ public:
 						continue;
 					}
 
-
 					stringstream  lineStream(line);
 					string cell;
 
@@ -159,21 +158,20 @@ public:
 							firstColumn = 0;
 							continue;
 						}
-						cout << "Index " << row << ":" << column << " File: "  << fileNumber << endl;
+						//cout << "Index " << row << ":" << column << " File: "  << fileNumber << endl;
 						//cout << "Valore " << cell << endl;
 						_sim_matrix[fileNumber](row, column) = stod (cell);
 						cout.precision(15);
 
-						cout << "Read value " << cell << endl;
 
 						column++;
 
 
 					}
-
 					column = 0;
 					firstColumn = 1;
 					row++;
+
 
 				}
 
