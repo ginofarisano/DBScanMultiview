@@ -47,6 +47,18 @@ class Clusters
 public:
 	Clusters (MultidimensionalPoint & ps) : _ps(ps)
 {
+
+		/*******************************/
+		//re-initialize variables when you run multiple iterations of the algorithm
+
+		_pointId_to_clusterId = std::vector<ClusterId>();
+
+		_sim_matrix = std::vector<_sim>();
+
+		_clusters = std::vector<Cluster>();
+
+		/*******************************/
+
 		if(ps.size()>0){
 			_pointId_to_clusterId.resize(_ps[0].size(), 0);
 		}

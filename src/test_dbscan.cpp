@@ -4,7 +4,7 @@
 
 void withOutSimFile();
 void withSimFile();
-
+void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream & fileOutput);
 int main(){
 
 	/**
@@ -124,6 +124,94 @@ int main(){
        N.B 8 è in espandiCluster->cmq è aggiunto
 
 
+       ///////////////////////////////////
+
+       eps1=0.11 , eps2=0.7 minPts=2
+
+	    0  1    2      3    4    5      6     7     8
+
+	   (1 1.1  1.2)  (2    2.1  2.2)   (3     3.1   3.2)       eps=0.11
+
+	   Caratteristica2:
+
+	   (5 5.2  5.4   5.6   6)   (10    10.4  10.8  11)    eps=0.7
+
+
+		0
+		0->1
+
+		1
+		0->1
+		0->2
+		0->3
+
+		minPts=3 C1={0}
+		da espandere 1,2,3
+
+		0
+		1->2
+
+		1
+		1->2
+		1->3
+
+		minPts=2 C1={0,1}
+		da espandere 2,3
+
+		0
+		2->/
+
+		1
+		2->3
+		2->4
+
+		minPts=2 C1={0,1,2}
+		da espandere 3,4
+
+		0
+		3->4
+
+		1
+		3->4
+
+		minPts=1 C1={0,1,2,3}
+
+		(SIAMO SEMPRE NEL CLUSTER1 PERCHé ANCORA C'é da "espandere 4")
+
+		0
+		4->5
+
+		1
+		4->/
+		minPts=1 C1={0,1,2,3,4} CMQ è AGGIUNTO 4
+
+		0
+		5->/
+
+		1
+		5->6
+		5 RUMORE
+
+		0
+		6->7
+
+		1
+		6->7
+		6->8
+		minPts=2 C2={6}
+		da espandere 7,8
+
+		0
+		7->8
+
+		1
+		7->8
+		minPts=1 C2={6,7}
+
+		8 aggiunto anche se non c'è rimasto Nulla
+		C2={6,7,8}
+
+
 
 	  Intersezione
 
@@ -190,27 +278,59 @@ int main(){
 	   C2={6,7,8}
 
 
-
+	   //////////////////////////
 
 
 
 	 */
-	bool run = 0;
+	int run = 2;
 
-	if(run)
+	if(run==0)
 		//i have not a sim file
 		withOutSimFile();
-	else
+	else if(run==1)
 		//i have a sim file
 		withSimFile();
+	else if (run==2){
+
+		double eps1From = 0.6;
+		double eps1To = 0.99;
+		double eps2From = 0.6;
+		double eps2To = 0.99;
+		int minPtsFrom = 4;
+		int minPtsTo = 20;
+
+		std::cout << "Start" << std::endl;
+
+		ofstream fileOutput;
+		fileOutput.open ("output.txt");
+
+		for(double epsF1=eps1From;epsF1<=eps1To;epsF1+=0.1){
+
+			for(double epsF2=eps2From;epsF2<=eps2To;epsF2+=0.1){
+
+				for(int minPts=minPtsFrom;minPts<=minPtsTo;minPts++){
+
+					withSimFileIterationForMyData(epsF1,epsF2,minPts,fileOutput);
+
+				}
 
 
+			}
 
+		}
+
+		fileOutput.close();
+
+	}
 }
 
 void withOutSimFile(){
 
 	using namespace Metrics;
+
+	ofstream fileOutput;
+	fileOutput.open ("output.txt");
 
 	//use this structure only if you have not a correlation matrix file
 	//numbersOfFeatures is the number of view
@@ -256,12 +376,15 @@ void withOutSimFile(){
 
 	clusters.run_cluster(0);
 
-	clusters.print_cluster();
+	clusters.print_cluster(fileOutput);
 
 	std::cout << "\nFine" << std::endl;
 }
 
 void withSimFile(){
+
+	ofstream fileOutput;
+	fileOutput.open ("output.txt");
 
 	std::cout << "Start" << std::endl;
 
@@ -289,10 +412,53 @@ void withSimFile(){
 	// run clustering (1 union, 0 intersection)
 	clusters.run_cluster(0,_sim_filename.size(),clusters.returnDimension());
 
-	clusters.print_cluster();
+	clusters.print_cluster(fileOutput);
 
 	//std::cout << clusters;
 
 
 	std::cout << "\nFine" << std::endl;
+}
+
+void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream & fileOutput){
+
+	cout  << "eps1=" << epsF1 << ",eps2=" << epsF2 << ",minPts=" << minPts <<",";
+
+	fileOutput << "eps1=" << epsF1 << ",eps2=" << epsF2 << ",minPts=" << minPts<< ",";
+	//fill this structure only if you have not a correlation matrix file
+	std::cout << "Start" << std::endl;
+
+	//fill this structure only if you have not a correlation matrix file
+	Clustering::MultidimensionalPoint multidimensionalPoint;
+
+	//add eps for every view
+	std::vector<double> _eps_vector;
+
+	_eps_vector.push_back(epsF1);
+	_eps_vector.push_back(epsF2);
+
+	cout << _eps_vector.size() << endl;
+
+	//initialize this structure with the names
+	vector<string> _sim_filename;
+
+	_sim_filename.push_back("UNO.csv");
+	_sim_filename.push_back("DUE.csv");
+
+
+	//the 3 value is minPts
+	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_vector, minPts,_sim_filename);
+
+	clusters.readSimilarity(_sim_filename,clusters.returnDimension());
+
+	// run clustering (1 union, 0 intersection)
+	clusters.run_cluster(1,_sim_filename.size(),clusters.returnDimension());
+
+	clusters.print_cluster_in_file(fileOutput);
+
+	//std::cout << clusters;
+
+
+	std::cout << "\nFine" << std::endl;
+
 }

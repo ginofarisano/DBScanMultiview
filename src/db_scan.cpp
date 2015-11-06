@@ -6,10 +6,11 @@ using namespace std;
 
 namespace Clustering{
 
-ClusterId cid = 0;
+ClusterId cid;
 
 void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
+	cid = 0;
 
 	// foreach pid...ho messo _ps[0] perchè il numero di individui
 	// è lo stesso per ogni vista
@@ -22,15 +23,12 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 		size=_ps[0].size();
 		//numero di viste
 		size_v=_ps.size();
-	} else{
+	} else {
 		//numero di individui
 		size=dimension;
 		//numero di viste
 		size_v=views;
 	}
-
-
-
 
 	for (PointId pid = 0; pid < size; pid++){
 
@@ -235,17 +233,30 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 }
 
-void DBSCAN::print_cluster(){
+void DBSCAN::print_cluster(ofstream &fileOutput){
 	for(int i=1;i<=cid;i++)
 	{
-		std::cout << std::endl << "Cluster " << i << ":";
+		std::cout << endl << "Cluster " << i << ":";
+		fileOutput << std::endl << "Cluster " << i << ":";
 		for(int j=0;j<_pointId_to_clusterId.size();j++){
 			if(_pointId_to_clusterId[j]==i){
 				std::cout << " " << j;
+				fileOutput << " " << j;
 			}
 		}
 	}
 
 }
+
+void DBSCAN::print_cluster_in_file(ofstream &fileOutput){
+
+	for(int j=0;j<_pointId_to_clusterId.size();j++){
+		fileOutput << _pointId_to_clusterId[j] << " ";
+	}
+
+	fileOutput << endl;
+}
 };
+
+
 

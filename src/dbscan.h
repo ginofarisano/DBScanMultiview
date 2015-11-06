@@ -15,6 +15,13 @@ public:
 		Clusters(ps), _eps_vector(eps), _minPts(minPts)
 {
 
+		/*******************************/
+		//re-initialize variables when you run multiple iterations of the algorithm
+
+		_noise = std::vector<bool>();
+		_visited = std::vector<bool> ();
+		/*******************************/
+
 		//the first cell is empty
 		int dimension = -1;
 		int numFiles = -1;
@@ -58,7 +65,8 @@ public:
 	// The clustering algo
 	//
 	void run_cluster(bool UnionOrIntersection=0, int dimension=0, int view=0);
-	void print_cluster();
+	void print_cluster(ofstream &fileOutput);
+	void print_cluster_in_file(ofstream & fileOutput);
 	//
 	// The clustering algo
 	//
@@ -84,7 +92,6 @@ private:
 
 	int dimension;
 
-public:
 	std::vector<bool> _visited;
 
 
