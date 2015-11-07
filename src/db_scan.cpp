@@ -37,7 +37,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 		} else
 			continue;
 
-		std::cout <<"New: " << pid << std::endl;
+		//std::cout <<"New: " << pid << std::endl;
 
 		//inizializzato per ogni PID
 		Neighbors* neighbors_array = new Neighbors[size_v];
@@ -58,7 +58,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 			for(int n=0;n<neighbords_size;n++){
 				PointId point_id=neighbors_array[i][n];
-				std::cout << pid << "->" << point_id <<  std::endl;
+				//std::cout << pid << "->" << point_id <<  std::endl;
 				map_view[point_id]++;
 				//std::cout << map_view[point_id] <<  std::endl;
 			}
@@ -87,12 +87,12 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 			std::map<PointId, int>::iterator i = map_view.begin();
 
 			while (i != map_view.end()) {
-				cout << "La taglia è " << map_view.size() << endl;
+				//cout << "La taglia è " << map_view.size() << endl;
 				if ((i->second)==size_v) {
 					neighbors_size++;
 					++i;
 				} else {
-					std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
+					//std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
 					std::map<PointId, int>::iterator toErase = i;
 					++i;
 					map_view.erase(toErase);
@@ -102,11 +102,11 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 		}
 
-		cout << "La taglia è " << map_view.size() << endl;
+		//cout << "La taglia è " << map_view.size() << endl;
 		//**// UNIONE O INTERSEZIONE FINE
 		sizet=map_view.size();
 
-		std::cout << "Point i=" << pid << ". Numero di vicini " << neighbors_size << std::endl;
+		//std::cout << "Point i=" << pid << ". Numero di vicini " << neighbors_size << std::endl;
 
 		// not enough support -> mark as noice
 		if (neighbors_size < _minPts)
@@ -116,7 +116,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 		}
 		else
 		{
-			std::cout << "Point i=" << pid << " can be expanded " << std::endl;// = true;
+			//std::cout << "Point i=" << pid << " can be expanded " << std::endl;// = true;
 
 			// Add p to current cluster
 			cid++;
@@ -130,7 +130,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 			// go to neighbors
 			for (map <PointId, int>::const_iterator i = map_view.begin(); i != map_view.end(); ++i){
 
-				std::cout << i->first << std::endl;
+				//std::cout << i->first << std::endl;
 
 
 				//inizializzato per ogni vicino
@@ -160,7 +160,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 					for(int n=0;n<neighbords_size2;n++){
 						PointId point_id=neighbors_array2[i][n];
-						std::cout << nPid << "->" << point_id <<  std::endl;
+						//std::cout << nPid << "->" << point_id <<  std::endl;
 						map_view2[point_id]++;
 						//std::cout << map_view[point_id] <<  std::endl;
 					}
@@ -185,7 +185,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 							neighbors_size2++;
 							++i;
 						} else {
-							std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
+							//std::cout << "Point i=" << pid << ". " << i->first << " locale ma non globale. Presente in solo " << i->second  << " view/s"<< std::endl;// = true;
 							std::map<PointId, int>::iterator toErase = i;
 							++i;
 							map_view2.erase(toErase);
@@ -199,7 +199,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 				if(neighbors_size2 >= _minPts){
 
-					std::cout << "\t Expanding to pid=" << nPid << std::endl;
+					//std::cout << "\t Expanding to pid=" << nPid << std::endl;
 
 					// join
 					for (map <PointId, int>::const_iterator i = map_view2.begin(); i != map_view2.end(); ++i){
@@ -215,7 +215,7 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 
 				// not already assigned to a cluster
 				if (!_pointId_to_clusterId[i->first]){
-					std::cout << "\tadding pid=" << i->first << std::endl;
+					//std::cout << "\tadding pid=" << i->first << std::endl;
 					c.push_back(i->first);
 					_pointId_to_clusterId[i->first]=cid;
 				}
@@ -236,11 +236,11 @@ void DBSCAN::run_cluster(bool UnionOrIntersection, int views, int dimension){
 void DBSCAN::print_cluster(ofstream &fileOutput){
 	for(int i=1;i<=cid;i++)
 	{
-		std::cout << endl << "Cluster " << i << ":";
+		//std::cout << endl << "Cluster " << i << ":";
 		fileOutput << std::endl << "Cluster " << i << ":";
 		for(int j=0;j<_pointId_to_clusterId.size();j++){
 			if(_pointId_to_clusterId[j]==i){
-				std::cout << " " << j;
+				//std::cout << " " << j;
 				fileOutput << " " << j;
 			}
 		}

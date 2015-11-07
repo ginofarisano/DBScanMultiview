@@ -293,21 +293,21 @@ int main(){
 		withSimFile();
 	else if (run==2){
 
-		double eps1From = 0.6;
+		double eps1From = 0.4;
 		double eps1To = 0.99;
-		double eps2From = 0.6;
+		double eps2From = 0.4;
 		double eps2To = 0.99;
 		int minPtsFrom = 4;
-		int minPtsTo = 20;
+		int minPtsTo = 25;
 
 		std::cout << "Start" << std::endl;
 
 		ofstream fileOutput;
 		fileOutput.open ("output.txt");
 
-		for(double epsF1=eps1From;epsF1<=eps1To;epsF1+=0.1){
+		for(double epsF1=eps1From;epsF1<=eps1To;epsF1+=0.01){
 
-			for(double epsF2=eps2From;epsF2<=eps2To;epsF2+=0.1){
+			for(double epsF2=eps2From;epsF2<=eps2To;epsF2+=0.01){
 
 				for(int minPts=minPtsFrom;minPts<=minPtsTo;minPts++){
 
@@ -323,6 +323,8 @@ int main(){
 		fileOutput.close();
 
 	}
+
+	std::cout << "End" << std::endl;
 }
 
 void withOutSimFile(){
@@ -422,11 +424,10 @@ void withSimFile(){
 
 void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream & fileOutput){
 
-	cout  << "eps1=" << epsF1 << ",eps2=" << epsF2 << ",minPts=" << minPts <<",";
+	cerr  << "eps1=" << epsF1 << ",eps2=" << epsF2 << ",minPts=" << minPts << endl;
 
 	fileOutput << "eps1=" << epsF1 << ",eps2=" << epsF2 << ",minPts=" << minPts<< ",";
 	//fill this structure only if you have not a correlation matrix file
-	std::cout << "Start" << std::endl;
 
 	//fill this structure only if you have not a correlation matrix file
 	Clustering::MultidimensionalPoint multidimensionalPoint;
@@ -437,13 +438,11 @@ void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream
 	_eps_vector.push_back(epsF1);
 	_eps_vector.push_back(epsF2);
 
-	cout << _eps_vector.size() << endl;
-
 	//initialize this structure with the names
 	vector<string> _sim_filename;
 
-	_sim_filename.push_back("UNO.csv");
-	_sim_filename.push_back("DUE.csv");
+	_sim_filename.push_back("correlation1.csv");
+	_sim_filename.push_back("correlation2.csv");
 
 
 	//the 3 value is minPts
@@ -457,8 +456,5 @@ void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream
 	clusters.print_cluster_in_file(fileOutput);
 
 	//std::cout << clusters;
-
-
-	std::cout << "\nFine" << std::endl;
 
 }

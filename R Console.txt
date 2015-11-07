@@ -1,0 +1,13 @@
+ #carico il dataframe
+ mydata1 = read.table("kmeans_miRNASeq_centers.txt")
+ mydata2 = read.table("kmeans_miRNA_centers.txt")
+ #calcolo la correlazione con il metodo di Pearson - ptions all.obs (assumes no missing data - missing data will produce an error)
+ correlation1 <- cor(mydata1, use="all.obs", method="pearson")
+ correlation2 <- cor(mydata2, use="all.obs", method="pearson")
+ #scrivo tutto in un csv
+ write.csv(correlation1, file = "correlation1.csv")
+ write.csv(correlation2, file = "correlation2.csv")
+ #stampo senza prima riga e prima colonna
+ write.table(correlation1, file = "kmeans_miRNASeq_centers_corr.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
+ write.table(correlation2, file = "kmeans_miRNA_centers_corr.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
+ 
