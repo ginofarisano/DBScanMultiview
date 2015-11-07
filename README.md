@@ -1,12 +1,12 @@
 # DBScanMultiview
 
-Per analizzare i risultati dell'esperimento (ora c'è solo l'unione) io ho utilizzato R e in particolare il 
+Per analizzare i risultati dell'esperimento  io ho utilizzato R e in particolare il 
 pachetto clusterSim che ha vari indici già belli e fatti-> considerare la terza colonna del fileOutput che
 è un vettore già bello e pronto da dare in pasto a clusterSim: vedi l'indirizzo
 http://artax.karlin.mff.cuni.cz/r-help/library/clusterSim/html/index.DB.html dove cl1$clustering è proprio quello di cui
 sto parlando. Esempio da cui prendere spunto:
 
-# Example 1
+Example 1
 library(clusterSim)
 data(data_ratio)
 cl1 <- pam(data_ratio, 4)
