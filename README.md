@@ -18,7 +18,7 @@ fare solo il plot con le line.
 -fare analisi con DBIndex e AngelaIndex
 -fare la matrice di confusione con MatriceDiConfusione.R (io l'ho fatto solo per i migliori)
 
-N.B il codice è commmentata abbastanza e "funziona
+N.B il codice è commmentato abbastanza e "funziona"
 
 Per qualsiasi info contattare gino.farisano@gmail.com
 
