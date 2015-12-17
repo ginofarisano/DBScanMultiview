@@ -1,0 +1,5 @@
+load("/Users/ginofarisano/Desktop/progetto IAC/MVDA/data/tcga_breast.RData")
+load("/Users/ginofarisano/Desktop/progetto IAC/minimi/Prova.RData")
+load("/Users/ginofarisano/Desktop/progetto IAC/minimi/tcga_breast.RData")
+load("/Users/ginofarisano/Desktop/progetto IAC/minimi/Prova.RData")
+load("/Users/ginofarisano/Desktop/progetto IAC/minimi/tcga_breast.RData")

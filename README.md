@@ -1,33 +1,24 @@
-# DBScanMultiview
+Spiegazione algoritmo, motivazioni e risultati sono commentati nelle slides
 
-Per analizzare i risultati dell'esperimento  io ho utilizzato R e in particolare il 
-pachetto clusterSim che ha vari indici già belli e fatti-> considerare la terza colonna del fileOutput che
-è un vettore già bello e pronto da dare in pasto a clusterSim: vedi l'indirizzo
-http://artax.karlin.mff.cuni.cz/r-help/library/clusterSim/html/index.DB.html dove cl1$clustering è proprio quello di cui
-sto parlando. Esempio da cui prendere spunto:
+Implementazione di una variante del DBScan discussa nel paper http://fogo.dbs.ifi.lmu.de/Publikationen/Papers/PAKDD04.pdf
 
-Example 1
-library(clusterSim)
-data(data_ratio)
-cl1 <- pam(data_ratio, 4)
-d<-dist(data_ratio)
-print(index.DB(data_ratio, cl1$clustering,d, centrotypes="medoids"))
+Codice C++ single view modificato: http://codingplayground.blogspot.it/2009/11/dbscan-clustering-algorithm.html
 
-Per caricarsi il dataframe vedere il file R console.txt.
+ARCardboardBase contiene il progetto Unity per la visualizzazione 3D dei plot (contiene anche l'APK)
 
-Cose da fare (quelle con il visto le sto facendo già io):
-
-V Davies Bouldin
-
--adJusted rand index
-
--siluette
-
--matrice di confusione
-
-istogramma della correlazione intracluster e intercluster
-
-(probabilmente ci sono altre cose da fare così come ha fatto Angela nel paper)
+slides: http://www.slideshare.net/ginofarisano5/db-scan-multiview
 
 
+Iter per eseguire gli esperimenti
+
+-eseguire DBscanMultiview in C++
+-eseguire ContourPlotAndBidimensionalPlotAngela.R per i plot 2D e 3D (crea anche i modelli 3D). Per il single view è possibile 
+fare solo il plot con le line. 
+-cancellare cluste banali con CleanFile.R (multiview) e CleanFilesSingleView.R (single view)
+-fare analisi con DBIndex e AngelaIndex
+-fare la matrice di confusione con MatriceDiConfusione.R (io l'ho fatto solo per i migliori)
+
+N.B il codice è commmentata abbastanza e "funziona
+
+Per qualsiasi info contattare gino.farisano@gmail.com
 

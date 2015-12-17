@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Cardboard/Scripts/VRDevices/BaseCardboardDevice.cs">
+    <Files>
+      <File FileName="Assets/Cardboard/Scripts/CardboardHead.cs" Line="118" Column="2" />
+      <File FileName="Assets/Cardboard/Scripts/CardboardEye.cs" Line="148" Column="3" />
+      <File FileName="Assets/Cardboard/Scripts/VRDevices/BaseCardboardDevice.cs" Line="48" Column="53" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

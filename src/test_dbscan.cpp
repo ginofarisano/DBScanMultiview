@@ -4,7 +4,10 @@
 
 void withOutSimFile();
 void withSimFile();
+//multi View
 void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream & fileOutput);
+//single View
+void withSimFileIterationForMyData(double epsF1,int minPts,ofstream & fileOutput);
 int main(){
 
 	/**
@@ -307,16 +310,21 @@ int main(){
 
 		for(double epsF1=eps1From;epsF1<=eps1To;epsF1+=0.01){
 
-			for(double epsF2=eps2From;epsF2<=eps2To;epsF2+=0.01){
+			//DECOMMENT- COMMENT THIS LINE IF YOU USE SINGLE OR MULTIVIEW
+			//for(double epsF2=eps2From;epsF2<=eps2To;epsF2+=0.01){
 
 				for(int minPts=minPtsFrom;minPts<=minPtsTo;minPts++){
 
-					withSimFileIterationForMyData(epsF1,epsF2,minPts,fileOutput);
+					//MULTIVIEW
+					//withSimFileIterationForMyData(epsF1,EPSF2,minPts,fileOutput);
+
+					//SINGLEVIEW
+					withSimFileIterationForMyData(epsF1,minPts,fileOutput);
 
 				}
 
 
-			}
+			//}
 
 		}
 
@@ -444,6 +452,42 @@ void withSimFileIterationForMyData(double epsF1,double epsF2,int minPts,ofstream
 	_sim_filename.push_back("correlation1.csv");
 	_sim_filename.push_back("correlation2.csv");
 
+
+	//the 3 value is minPts
+	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_vector, minPts,_sim_filename);
+
+	clusters.readSimilarity(_sim_filename,clusters.returnDimension());
+
+	// run clustering (1 union, 0 intersection)
+	clusters.run_cluster(1,_sim_filename.size(),clusters.returnDimension());
+
+	clusters.print_cluster_in_file(fileOutput);
+
+	//std::cout << clusters;
+
+}
+
+//classic dbscan single View
+void withSimFileIterationForMyData(double epsF1,int minPts,ofstream & fileOutput){
+
+	cerr  << "eps1=" << epsF1 << ",minPts=" << minPts << endl;
+
+	fileOutput << "eps1=" << epsF1  << ",minPts=" << minPts<< ",";
+	//fill this structure only if you have not a correlation matrix file
+
+	//fill this structure only if you have not a correlation matrix file
+	Clustering::MultidimensionalPoint multidimensionalPoint;
+
+	//add eps for every view
+	std::vector<double> _eps_vector;
+
+	_eps_vector.push_back(epsF1);
+
+	//initialize this structure with the names
+	vector<string> _sim_filename;
+
+	//_sim_filename.push_back("correlation1.csv");
+	_sim_filename.push_back("correlation2.csv");
 
 	//the 3 value is minPts
 	Clustering::DBSCAN clusters(multidimensionalPoint, _eps_vector, minPts,_sim_filename);
