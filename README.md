@@ -11,9 +11,9 @@ slides: http://www.slideshare.net/ginofarisano5/db-scan-multiview
 
 Iter per eseguire gli esperimenti
 
--eseguire DBscanMultiview in C++
--eseguire ContourPlotAndBidimensionalPlotAngela.R per i plot 2D e 3D (crea anche i modelli 3D). Per il single view è possibile 
-fare solo il plot con le line. 
+-eseguire Calculate correlation in result analysis per calcolare la matrice di correlazione sulle viste da analizzare
+-eseguire DBscanMultiview in C++ (è consigliabile provare più combinazioni dei parametri eps e minPts)
+-eseguire ContourPlotAndBidimensionalPlot*.R (io ho utilizzato due indici) per i plot 2D e 3D (crea anche i modelli 3D). Per il single view fare solo il plot con le line (il grafico 3D non ha senso in questo caso). 
 -cancellare cluste banali con CleanFile.R (multiview) e CleanFilesSingleView.R (single view)
 -fare analisi con DBIndex e AngelaIndex
 -fare la matrice di confusione con MatriceDiConfusione.R (io l'ho fatto solo per i migliori)
